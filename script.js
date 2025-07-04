@@ -1,32 +1,30 @@
-const messages = [
-    "I love you daughter 💖", // Inglés
-    "Te amo hija 💖",       // Español
-    "Eu te amo filha 💖",   // Portugués
-    "Ti amo figlia 💖",     // Italiano
-    "Я люблю тебя, доченька 💖", // Ruso
-    "我爱你女儿 💖",        // Chino
-    "사랑해 딸 💖"         // Coreano
-];
-
-let currentIndex = 0;
-const messageElement = document.getElementById('message');
-
-function changeMessage() {
-    messageElement.style.opacity = 0; // Oculta el texto
-    setTimeout(() => {
-        currentIndex = (currentIndex + 1) % messages.length;
-        messageElement.textContent = messages[currentIndex];
-        messageElement.style.opacity = 1; // Muestra el nuevo texto
-    }, 800); // Duración de la transición de opacidad (ms)
-}
-
-// Inicializa el primer mensaje al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
-    messageElement.textContent = messages[currentIndex];
-    // La opacidad inicial la maneja el CSS con animation-delay
-});
+    const loveTextElement = document.getElementById('love-text');
 
-// Cambia el mensaje cada 4 segundos (4000 ms) después de la aparición inicial
-setTimeout(() => {
-    setInterval(changeMessage, 4000);
-}, 3500); // Retraso inicial para que las animaciones de entrada terminen
+    const messages = [
+        "Te amo, hija",        // Español
+        "I love you, daughter",// Inglés
+        "Eu te amo, filha",    // Portugués
+        "Ti amo, figlia",      // Italiano
+        "Я тебя люблю, дочь",  // Ruso (Ya tebya lyublyu, doch')
+        "我爱你，女儿",         // Chino Mandarín (Wǒ ài nǐ, nǚ'ér)
+        "사랑해, 딸",          // Coreano (Saranghae, ttal)
+        "我愛你，女兒"          // Taiwanés (Mandarín con caracteres tradicionales)
+    ];
+
+    let currentIndex = 0;
+
+    function changeText() {
+        // Actualiza el texto con el siguiente mensaje en la lista
+        loveTextElement.textContent = messages[currentIndex];
+        
+        // Prepara el índice para el siguiente mensaje
+        currentIndex = (currentIndex + 1) % messages.length;
+    }
+
+    // Cambia el texto inicial inmediatamente
+    changeText();
+
+    // Configura el intervalo para que coincida con la animación CSS (4 segundos)
+    setInterval(changeText, 4000);
+});
