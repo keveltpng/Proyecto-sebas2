@@ -8,8 +8,7 @@ body {
     overflow: hidden; /* Evita barras de desplazamiento */
     font-family: 'Dancing Script', cursive; /* Fuente romántica */
     color: #8B4513; /* Color del texto a tono con el borde */
-    /* Para centrar el contenido verticalmente en algunos casos, aunque min-height y display:flex ya ayudan */
-    height: 100vh; 
+    height: 100vh; /* Asegura que el body ocupe toda la altura disponible */
 }
 
 .main-wrapper {
@@ -22,84 +21,97 @@ body {
 
 .heart-container {
     position: relative;
-    width: 250px; /* Tamaño base del corazón */
-    height: 225px; /* 90% del ancho para la proporción de corazón */
+    width: 200px; /* Ancho total del área del corazón */
+    height: 180px; /* Altura total del área del corazón */
     transform: scale(0); /* Empieza invisible */
     opacity: 0; /* También empieza con opacidad 0 */
     animation: fadeInScale 1.5s forwards ease-out; /* Animación de aparición general */
-    display: flex; /* Para centrar el texto dentro del corazón */
+    display: flex;
     justify-content: center;
     align-items: center;
+    /* No necesitamos overflow: hidden aquí, las formas se contendrán mejor */
 }
 
+/* El elemento principal del corazón: será la punta inferior */
 .heart {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #F5F5DC; /* Corazón beige */
-    border: 8px solid #8B4513; /* Borde café */
-    border-radius: 50% 50% 0 0; /* Para la parte superior redondeada */
-    transform: rotate(-45deg); /* Gira para formar el corazón */
-    transform-origin: 50% 100%; /* Punto de pivote para la rotación */
-    box-sizing: border-box; /* Incluye padding y borde en el tamaño */
-    /* opacity: 0; <-- Eliminado aquí, la animación fadeInScale en heart-container se encarga */
-    /* animation: heartDraw 2s forwards ease-out; <-- Eliminado aquí, fadeInScale es suficiente */
-    /* animation-delay: 0.8s; <-- Eliminado */
-    display: flex; /* Para centrar el texto */
-    justify-content: center;
-    align-items: center;
+    width: 100px; /* Ancho de la base cuadrada que forma la punta */
+    height: 100px; /* Altura de la base cuadrada */
+    background-color: #F5F5DC; /* Color beige */
+    border: 6px solid #8B4513; /* Borde café */
+    transform: rotate(45deg); /* Rota para formar la punta inferior */
+    transform-origin: 50% 50%; /* Rota desde su propio centro */
+    top: 40px; /* Ajusta la posición vertical para que la punta esté abajo */
+    left: 50px; /* Ajusta la posición horizontal para centrarlo */
+    box-sizing: border-box;
+    opacity: 0; /* Inicialmente invisible para la animación de dibujo */
+    animation: heartDraw 1.5s forwards ease-out; /* Animación de "dibujo" */
+    animation-delay: 0.8s; /* Retraso para que aparezca después del contenedor */
+    /* No necesitamos flexbox aquí, el texto se posicionará de forma absoluta en heart-container */
 }
 
+/* Pseudo-elementos para las partes superiores redondeadas del corazón */
 .heart::before,
 .heart::after {
     content: '';
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #F5F5DC; /* Corazón beige */
-    border: 8px solid #8B4513; /* Borde café */
-    border-radius: 50%; /* Para los círculos superiores */
+    width: 100px; /* Mismo tamaño que la base cuadrada */
+    height: 100px;
+    background-color: #F5F5DC; /* Color beige */
+    border: 6px solid #8B4513; /* Borde café */
+    border-radius: 50%; /* Hace que sean círculos */
     box-sizing: border-box;
-    z-index: -1; /* Asegura que estén detrás del corazón principal */
+    z-index: -1; /* Los pone detrás del cuerpo principal del corazón */
+    opacity: 0; /* También animaremos su aparición */
+    animation: heartDraw 1.5s forwards ease-out; /* Misma animación que el cuerpo principal */
+    animation-delay: 0.8s; /* Mismo retraso */
 }
 
 .heart::before {
-    left: -50%;
-    top: 0;
+    top: -50px; /* Mueve el círculo superior izquierdo hacia arriba */
+    left: -50px; /* Mueve el círculo superior izquierdo hacia la izquierda */
 }
 
 .heart::after {
-    top: -50%;
-    right: 0;
+    top: -50px; /* Mueve el círculo superior derecho hacia arriba */
+    left: 50px; /* Mueve el círculo superior derecho hacia la derecha */
 }
 
 #message {
     position: absolute;
-    /* La rotación inversa para el texto dentro del corazón */
-    transform: rotate(45deg); /* Esto contrarresta la rotación del corazón para que el texto esté horizontal */
+    /* El texto se posiciona directamente dentro de heart-container, no del heart rotado */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra el texto perfectamente */
     text-align: center;
     width: 80%; /* Ancho del texto dentro del corazón */
-    font-size: 2.5em; /* Ajusta el tamaño de la fuente si es necesario */
-    padding-top: 10px; /* Pequeño ajuste vertical para centrado óptico */
+    font-size: 2.2em; /* Ajusta el tamaño de la fuente si es necesario */
+    padding: 0; /* Elimina padding que podría afectar el centrado */
     opacity: 0; /* Empieza invisible */
     animation: textFadeIn 1s forwards ease-in; /* Animación de aparición del texto */
     animation-delay: 2s; /* Retraso para que el texto aparezca después del corazón */
-    line-height: 1.2; /* Espaciado entre líneas para mejor lectura */
+    line-height: 1.2; /* Espaciado entre líneas */
+    color: #8B4513; /* Color del texto */
+    font-family: 'Dancing Script', cursive; /* Asegura la fuente */
 }
 
 /* --- Animaciones --- */
 
-/* Animación general de escala y opacidad para el contenedor del corazón */
+/* Animación general de escala y opacidad para el contenedor completo del corazón */
 @keyframes fadeInScale {
     0% { transform: scale(0); opacity: 0; }
-    80% { transform: scale(1.1); opacity: 1; } /* Un pequeño "rebote" */
+    80% { transform: scale(1.1); opacity: 1; } /* Pequeño "rebote" */
     100% { transform: scale(1); opacity: 1; }
+}
+
+/* Animación de "dibujo" del cuerpo principal del corazón (la punta) y los círculos */
+@keyframes heartDraw {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 /* Animación de aparición del texto */
 @keyframes textFadeIn {
-    0% { opacity: 0; transform: rotate(45deg) translateY(20px); }
-    100% { opacity: 1; transform: rotate(45deg) translateY(0); }
+    0% { opacity: 0; transform: translate(-50%, -50%) translateY(20px); }
+    100% { opacity: 1; transform: translate(-50%, -50%) translateY(0); }
 }
